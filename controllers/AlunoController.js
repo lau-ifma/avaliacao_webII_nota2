@@ -14,7 +14,14 @@ class AlunoController {
 
     salvar = async (req, res) => {
         const { nome, telefone, email, nota} = req.body;
-        const situacao = await nota
+        const n = nota
+        const situacao = "Aprovado"
+        
+        // if (parseFloat(n) >= 7){
+        //     situacao = "APROVADO"
+        // }else{
+        //     situacao = "REPROVADO"
+        // }
 
         const novo_aluno = {
             nome: nome,
