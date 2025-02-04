@@ -1,39 +1,43 @@
-
-import { FLOAT } from "sequelize"
-import Aluno from "../models/Aluno.js"
+import Aluno from "../models/Aluno.js";
 
 class AlunoController {
     index = async (req, res) => {
-        let alunos = await Aluno.findAll()
-        res.render('aluno/index', { alunos: alunos })
-    }
+        try {
+            const alunos = await Aluno.findAll();
+            res.render('aluno/index', { alunos });
+        } catch (error) {
+            console.error("Erro ao buscar alunos:", error);
+            res.status(500).send("Erro ao buscar alunos");
+        }
+    };
 
     cadastrar = (req, res) => {
-        res.render('aluno/cadastro')
-    }
+        res.render('aluno/cadastro');
+    };
 
     salvar = async (req, res) => {
-        const { nome, telefone, email, nota} = req.body;
-        const n = nota
-        const situacao = "Aprovado"
-        
-        // if (parseFloat(n) >= 7){
-        //     situacao = "APROVADO"
-        // }else{
-        //     situacao = "REPROVADO"
-        // }
+        try {
+            const { nome, telefone, email, nota } = req.body;
+            
+       
+            const n = parseFloat(nota);
+            const situacao = n >= 7 ? "Aprovado" : "Reprovado";
 
-        const novo_aluno = {
-            nome: nome,
-            telefone: telefone,
-            email: email,
-            nota: nota,
-            situacao: situacao
+            const novo_aluno = {
+                nome,
+                telefone,
+                email,
+                nota: n, 
+                situacao
+            };
+
+            await Aluno.create(novo_aluno);
+            res.redirect('/aluno');
+        } catch (error) {
+            console.error("Erro ao salvar aluno:", error);
+            res.status(500).send("Erro ao salvar aluno");
         }
-        Aluno.create(novo_aluno).then(() => {
-            res.redirect('/aluno')
-        })
-    }
+    };
 }
 
-export default new AlunoController()
+export default new AlunoController();
