@@ -12,7 +12,7 @@ const sequelize = new Sequelize(DB_NAME, USER_NAME, PASSWORD, {
 })
 
 sequelize.authenticate().then(function (){
-    console.log('Conectado ao banco com sucesso!.');
+    console.log('Conectado ao banco com sucesso! \n');
 }).catch(function (error) {
     console.log('Falha na conexão: '+error);
 })
